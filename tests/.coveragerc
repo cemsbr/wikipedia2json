@@ -1,0 +1,17 @@
+[run]
+branch = True
+source =
+    ../
+omit =
+    *__init__.py
+    */tests/*
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise NotImplementedError
+    if __name__ == .__main__.:
+
+[html]
+directory = coverage_html
