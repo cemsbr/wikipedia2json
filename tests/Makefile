@@ -19,7 +19,7 @@ coverage: .coverage
 	        | sed "s/^TOTAL \{$${#PREFIX}\}/TOTAL/"
 
 .coverage: test_*.py $(RESOURCES)
-	rm .coverage
+	@-rm .coverage
 	@export PYTHONPATH="$$PYTHON_PATH:.."; \
 	for test in test_*.py; do \
 		coverage run -a $$test; \
