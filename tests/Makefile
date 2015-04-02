@@ -1,4 +1,4 @@
-RESOURCES := $(shell find ../ -maxdepth 1 -name \*.py)
+RESOURCES := $(shell find ../ -maxdepth 1 -name '[^\.]*.py')
 
 tests:
 	@PYTHONPATH="$$PYTHON_PATH:.." python3 -m unittest
@@ -19,6 +19,7 @@ coverage: .coverage
 	        | sed "s/^TOTAL \{$${#PREFIX}\}/TOTAL/"
 
 .coverage: test_*.py $(RESOURCES)
+	rm .coverage
 	@export PYTHONPATH="$$PYTHON_PATH:.."; \
 	for test in test_*.py; do \
 		coverage run -a $$test; \

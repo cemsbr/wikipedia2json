@@ -174,14 +174,13 @@ class TestWiki2Json(unittest.TestCase):
         expected = '{"t1":{"t2":{"t3":"some text"}}}'
         self.assertEqual(expected, actual)
 
-#    def test_real_case(self):
-#        xml = """  <page>
-#    <revision>
-#      <id>631144794</id>
-#    </revision>
-#  </page>"""
-#        actual = self._parse(xml.splitlines(keepends=True))
-#        self.assertEqual('{"revision":{"id":"63114479"}}', actual)
+    def test_escaping(self):
+        actual = self._parse([
+            '  <page>\n',
+            '    <escapeme>\ "</escapeme>\n',
+            '  </page>\n'])
+        expected = r'{"escapeme":"\\ \""}'
+        self.assertEqual(expected, actual)
 
     def _parse(self, lines):
         w2j = Wiki2Json()
