@@ -182,6 +182,14 @@ class TestWiki2Json(unittest.TestCase):
         expected = r'{"escapeme":"\\ \""}'
         self.assertEqual(expected, actual)
 
+    def test_timestamp_conversion(self):
+        actual = self._parse([
+            '  <page>\n',
+            '    <timestamp>2015-03-04T13:45:11Z</timestamp>\n',
+            '  </page>'])
+        expected = '{"timestamp":1425444311}'
+        self.assertEqual(expected, actual)
+
     def _parse(self, lines):
         w2j = Wiki2Json()
         for line in lines:

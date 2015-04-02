@@ -2,8 +2,10 @@ import re
 import json
 import builtins
 from io import StringIO
+from datetime import datetime
 
 
+# Do not print extra newline
 def print(*args, **kwargs):
     kwargs['end'] = ''
     builtins.print(*args, **kwargs)
@@ -27,6 +29,10 @@ class Node:
 
     def append_text(self, text):
         self._text.write(text)
+
+    def add_timestamp(self, iso):
+        timestamp = datetime.strptime(iso, '%Y-%m-%dT%H:%M:%SZ').timestamp()
+        print(json.dumps(int(timestamp)))
 
     # Adds previously appended text
     def _finish_text(self):
@@ -76,7 +82,10 @@ class Wiki2Json:
         if m:
             # <tag>text</tag>
             self._parent().add_tag(m.group(1))
-            self._parent().add_text(m.group(2))
+            if m.group(1) == 'timestamp':
+                self._parent().add_timestamp(m.group(2))
+            else:
+                self._parent().add_text(m.group(2))
         elif not self._re_empty.match(line):
             self._parse_multiline_tag(line)
 
