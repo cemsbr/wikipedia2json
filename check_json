@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+import json
+import fileinput
+
+
+for line in fileinput.input():
+    try:
+        json.loads(line)
+    except ValueError as e:
+        print('Could not load line {}:'.format(fileinput.lineno()))
+        print(line)
+        print(e)
+
+print('{} json lines verified.'.format(fileinput.lineno()))
