@@ -93,7 +93,7 @@ class Wiki2Json:
                 self._parent().add_timestamp(value)
             else:
                 self._parent().add_value(value)
-        elif not self._re_empty.match(line):
+        else:
             self._parse_multiline_tag(line)
 
     def _parse_multiline_tag(self, line):
