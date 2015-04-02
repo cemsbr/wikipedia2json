@@ -143,22 +143,13 @@ class TestWiki2Json(unittest.TestCase):
                    '{"tag":"Second page"}'
         self.assertEqual(expected, actual)
 
-    def test_skip_empty_tag(self):
+    def test_empty_tag_as_boolean(self):
         actual = self._parse([
             '  <page>\n',
-            '    <empty />\n',
-            '    <tag>First page</tag>\n',
+            '    <redirect title="Computer accessibility" />\n',
+            '    <minor />\n',
             '  </page>\n'])
-        expected = '{"tag":"First page"}'
-        self.assertEqual(expected, actual)
-
-    def test_skip_empty_tag_with_attribute(self):
-        actual = self._parse([
-            '  <page>\n',
-            '    <empty title="A Title" />\n',
-            '    <tag>First page</tag>\n',
-            '  </page>\n'])
-        expected = '{"tag":"First page"}'
+        expected = '{"redirect":true,"minor":true}'
         self.assertEqual(expected, actual)
 
     def test_3_level_tag(self):
@@ -188,6 +179,16 @@ class TestWiki2Json(unittest.TestCase):
             '    <timestamp>2015-03-04T13:45:11Z</timestamp>\n',
             '  </page>'])
         expected = '{"timestamp":1425444311}'
+        self.assertEqual(expected, actual)
+
+    def test_numeric_tags(self):
+        actual = self._parse([
+            '  <page>\n',
+            '    <ns>0</ns>\n',
+            '    <id>1</id>\n',
+            '    <parentid>42</parentid>\n',
+            '  </page>'])
+        expected = '{"ns":0,"id":1,"parentid":42}'
         self.assertEqual(expected, actual)
 
     def _parse(self, lines):

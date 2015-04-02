@@ -24,23 +24,22 @@ class Node:
         if not self._has_value:
             self._has_value = True
 
-    def add_text(self, text):
-        print(json.dumps(text))
+    def add_value(self, value):
+        print(json.dumps(value))
 
-    def append_text(self, text):
+    def append_multiline_text(self, text):
         self._text.write(text)
 
     def add_timestamp(self, iso):
-        timestamp = datetime.strptime(iso, '%Y-%m-%dT%H:%M:%SZ').timestamp()
-        print(json.dumps(int(timestamp)))
+        print(int(datetime.strptime(iso, '%Y-%m-%dT%H:%M:%SZ').timestamp()))
 
     # Adds previously appended text
-    def _finish_text(self):
+    def _finish_multiline_text(self):
         print(json.dumps(self._text.getvalue().replace('\n', ' ')))
         self._text.seek(0)
 
     def close(self):
-        self._finish_text() if self._text.tell() > 0 else print('}')
+        self._finish_multiline_text() if self._text.tell() > 0 else print('}')
 
 
 class Wiki2Json:
@@ -54,7 +53,7 @@ class Wiki2Json:
         # Only parses 'page' tags
         self._re_beg_page = re.compile(r'^\s+<page>\s*$')
         self._re_end_page = re.compile(r'^\s+</page>\s*$')
-        self._re_empty = re.compile(r'^\s+<\w+.*/>')
+        self._re_empty = re.compile(r'^\s+<(\w+).*/>')
         self._reset()
 
     def _reset(self):
@@ -74,18 +73,26 @@ class Wiki2Json:
             print('}\n')
             self._reset()
         # between <page> and </page>
-        elif not self._re_empty.match(line):
-            self._parse_page(line)
+        else:
+            m = self._re_empty.match(line)
+            if m:
+                self._parent().add_tag(m.group(1))
+                self._parent().add_value(True)
+            else:
+                self._parse_page(line)
 
     def _parse_page(self, line):
         m = self._re_one_line.match(line)
         if m:
             # <tag>text</tag>
             self._parent().add_tag(m.group(1))
-            if m.group(1) == 'timestamp':
-                self._parent().add_timestamp(m.group(2))
+            tag, value = m.group(1), m.group(2)
+            if tag.endswith('id') or tag == 'ns':
+                self._parent().add_value(int(value))
+            elif tag == 'timestamp':
+                self._parent().add_timestamp(value)
             else:
-                self._parent().add_text(m.group(2))
+                self._parent().add_value(value)
         elif not self._re_empty.match(line):
             self._parse_multiline_tag(line)
 
@@ -95,17 +102,17 @@ class Wiki2Json:
             # <tag>...
             self._init_multiline_tag(m.group(1))
             if m.group(2):
-                self._parent().append_text(m.group(2))
+                self._parent().append_multiline_text(m.group(2))
         else:
             m = self._re_end_tags[-1].match(line)
             if m:
                 # ...</tag>
                 if m.group(1):
-                    self._parent().append_text(m.group(1))
+                    self._parent().append_multiline_text(m.group(1))
                 self._end_multiline_tag()
             else:
                 # only text, no tags
-                self._parent().append_text(line)
+                self._parent().append_multiline_text(line)
 
     def _init_multiline_tag(self, tag):
         self._parent().add_tag(tag)
