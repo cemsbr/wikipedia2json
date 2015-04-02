@@ -1,6 +1,7 @@
 import re
 import json
 import builtins
+from io import StringIO
 
 
 def print(*args, **kwargs):
@@ -9,11 +10,9 @@ def print(*args, **kwargs):
 
 
 class Node:
-    _re_newline = re.compile('\n+')
-
     def __init__(self):
         self._has_value = False
-        self._text = ''
+        self._text = StringIO()
 
     def _separator(self):
         return ',' if self._has_value else '{'
@@ -27,15 +26,15 @@ class Node:
         print(json.dumps(text))
 
     def append_text(self, text):
-        self._text += text
+        self._text.write(text)
 
     # Adds previously appended text
     def _finish_text(self):
-        print(json.dumps(Node._re_newline.sub(' ', self._text)))
-        self._text = ''
+        print(json.dumps(self._text.getvalue().replace('\n', ' ')))
+        self._text.seek(0)
 
     def close(self):
-        self._finish_text() if self._text else print('}')
+        self._finish_text() if self._text.tell() > 0 else print('}')
 
 
 class Wiki2Json:
