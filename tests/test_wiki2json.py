@@ -191,6 +191,19 @@ class TestWiki2Json(unittest.TestCase):
         expected = '{"ns":0,"id":1,"parentid":42}'
         self.assertEqual(expected, actual)
 
+    def test_tag_trailing_spaces(self):
+        actual = self._parse([
+            '  <page>  \n',
+            '    <revision>  \n',
+            '      <text xml:space="preserve">  \n',
+            '1 1.\n',
+            '  </text>  \n',
+            '      <sha1>hash</sha1>  \n',
+            '    </revision>  \n',
+            '  </page>  \n'])
+        expected = '{"revision":{"text":"1 1. ","sha1":"hash"}}'
+        self.assertEqual(expected, actual)
+
     def _parse(self, lines):
         w2j = Wiki2Json()
         for line in lines:

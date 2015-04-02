@@ -45,15 +45,15 @@ class Node:
 class Wiki2Json:
     def __init__(self):
         # One-line key-value
-        self._re_one_line = re.compile(r'^\s+<(\w+).*?>(.+)</\1>\s*$')
+        self._re_one_line = re.compile(r'\s+<(\w+).*?>(.+)</\1>')
         # Beginning of a tag and maybe the beginning of its text
-        self._re_beg_tag = re.compile(r'^\s+<([^/]\w+).*?>(.*\S.*)?$', re.S)
+        self._re_beg_tag = re.compile(r'\s+<([^/]\w+).*?>(.*\S.*)?', re.S)
         # Tag-end regexes will be dynamically generated
         self._re_end_tags = []
         # Only parses 'page' tags
-        self._re_beg_page = re.compile(r'^\s+<page>\s*$')
-        self._re_end_page = re.compile(r'^\s+</page>\s*$')
-        self._re_empty = re.compile(r'^\s+<(\w+).*/>')
+        self._re_beg_page = re.compile(r'\s+<page>')
+        self._re_end_page = re.compile(r'\s+</page>')
+        self._re_empty = re.compile(r'\s+<(\w+).*/>')
         self._reset()
 
     def _reset(self):
@@ -125,7 +125,7 @@ class Wiki2Json:
         del self._re_end_tags[-1]
 
     def _add_re_end_tag(self, tag):
-        pattern = re.compile('^\s*(\S.*)?</%s>\s*$' % tag)
+        pattern = re.compile('(\s*\S.*)?\s*</%s>' % tag)
         self._re_end_tags.append(pattern)
 
     def _parent(self):
