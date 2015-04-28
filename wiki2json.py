@@ -75,7 +75,8 @@ class Wiki2Json:
         # between <page> and </page>
         else:
             m = self._re_empty.match(line)
-            if m:
+            # contributor as True messes the json schema inferred by Spark
+            if m and m.group(1) != 'contributor':
                 self._parent().add_tag(m.group(1))
                 self._parent().add_value(True)
             else:
