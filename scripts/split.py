@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #
-# Reads from standard input and writes to 1 file at a time up to its given size.
+# Reads from standard input and writes to 1 file at a time up to its given
+# size.
 #
 # For example, to save the 1st gigabyte of wikipedia dump to one file and
 # the 2nd and 3rd to a second file:
@@ -14,27 +15,27 @@
 import sys
 from collections import namedtuple
 
-
 FileParams = namedtuple('FileParams', ['size', 'file'])
 
 
 def str_to_bytes(size_str):
     unit = size_str[-1]
     if unit == 'G':
-        return int(size_str[:-1])*1024*1024*1024
+        return int(size_str[:-1]) * 1024 * 1024 * 1024
     elif unit == 'M':
-        return int(size_str[:-1])*1024*1024
+        return int(size_str[:-1]) * 1024 * 1024
     elif unit == 'K':
-        return int(size_str[:-1])*1024
+        return int(size_str[:-1]) * 1024
     else:
         return int(size_str)
 
+
 files = []
 for i in range(1, len(sys.argv), 2):
-    size_str, filename = sys.argv[i:i+2]
+    size_str, filename = sys.argv[i:i + 2]
     size = str_to_bytes(size_str)
     files.append(FileParams(size, open(filename, 'w')))
-files.sort(key=lambda f: f.size, reversed=True)
+files.sort(key=lambda f: f.size, reverse=True)
 
 
 def get_next_file(files, size):
@@ -64,4 +65,3 @@ for line in sys.stdin:
             file.file.write(line)
         else:
             break
-

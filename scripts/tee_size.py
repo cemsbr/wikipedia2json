@@ -24,11 +24,11 @@ f = open(sys.argv[2], 'w')
 should_quit = len(sys.argv) > 3
 
 if max_size[-1] == 'G':
-    max_size = int(max_size[:-1])*1024*1024*1024
+    max_size = int(max_size[:-1]) * 1024 * 1024 * 1024
 elif max_size[-1] == 'M':
-    max_size = int(max_size[:-1])*1024*1024
+    max_size = int(max_size[:-1]) * 1024 * 1024
 elif max_size[-1] == 'K':
-    max_size = int(max_size[:-1])*1024
+    max_size = int(max_size[:-1]) * 1024
 else:
     max_size = int(max_size)
 

@@ -3,7 +3,6 @@ import json
 import fileinput
 import sys
 
-
 for line in fileinput.input():
     try:
         json.loads(line)

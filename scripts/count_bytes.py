@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 import sys
 
-
 max_size = int(sys.argv[1])
-
 
 size = 0
 for line in sys.stdin:
