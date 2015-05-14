@@ -79,7 +79,7 @@ class Wiki2Json:
             if m and m.group(1) != 'contributor':
                 self._parent().add_tag(m.group(1))
                 self._parent().add_value(True)
-            else:
+            elif not m:
                 self._parse_page(line)
 
     def _parse_page(self, line):
