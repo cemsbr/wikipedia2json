@@ -3,6 +3,7 @@ import json
 import builtins
 from io import StringIO
 from datetime import datetime
+import time
 
 
 # Do not print extra newline
@@ -31,7 +32,9 @@ class Node:
         self._text.write(text)
 
     def add_timestamp(self, iso):
-        print(int(datetime.strptime(iso, '%Y-%m-%dT%H:%M:%SZ').timestamp()))
+        local = datetime.strptime(iso, '%Y-%m-%dT%H:%M:%SZ').timestamp()
+        utc = local - time.timezone
+        print(int(utc))
 
     # Adds previously appended text
     def _finish_multiline_text(self):

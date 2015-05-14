@@ -178,7 +178,7 @@ text</t3>
   <page>
     <timestamp>2015-03-04T13:45:11Z</timestamp>
   </page>""")
-        expected = '{"timestamp":1425444311}'
+        expected = '{"timestamp":1425476711}'
         self.assertEqual(expected, actual)
 
     def test_numeric_tags(self):
