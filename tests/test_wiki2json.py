@@ -215,6 +215,17 @@ text</t3>
         expected = '{"revision":{"text":"Test"}}'
         self.assertEqual(expected, actual)
 
+    def test_no_newlines_between_jsons(self):
+        actual = self._parse("""
+  <page>
+    <tag>Test</tag>
+  </page>
+  <page>
+    <tag>Test</tag>
+  </page>""")
+        expected = '{"tag":"Test"}\n{"tag":"Test"}'
+        self.assertEqual(expected, actual)
+
     def _parse(self, xml):
         w2j = Wiki2Json()
         for line in xml.split('\n'):

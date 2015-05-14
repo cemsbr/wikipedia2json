@@ -6,8 +6,8 @@ import sys
 for line in fileinput.input():
     try:
         json.loads(line)
-        print(line)
+        print(line, end='')
     except:
-        print(line, file=sys.stderr)
+        print(line, end='', file=sys.stderr)
 
 print('{} json lines verified.'.format(fileinput.lineno()), file=sys.stderr)
