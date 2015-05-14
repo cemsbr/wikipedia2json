@@ -1,0 +1,15 @@
+language: python
+branches:
+    only:
+        - master
+        - pre-master
+python:
+  - "3.3"
+  - "3.4"
+install:
+  - pip install -qr tests/requirements.txt
+script:
+  - cd tests/
+  - make coverage
+after_success:
+    - coveralls

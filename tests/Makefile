@@ -11,7 +11,7 @@ help:
 	@echo '         clean: deletes coverage data and html report'
 
 coverage: .coverage
-	@PREFIX="$$(readlink -e $$(dirname $$(pwd)))/"; \
+	@PREFIX="$$(readlink -e $$(dirname $$(pwd)))/wiki2json/"; \
 	        coverage report \
 	        | sed "s|$$PREFIX||" \
 	        | sed "s/^-\{$${#PREFIX}\}//" \
