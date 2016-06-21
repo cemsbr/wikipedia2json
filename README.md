@@ -4,6 +4,21 @@
 
 I wrote this project to convert `enwiki-20150304-pages-articles.xml.bz2` to a JSON file that can be properly loaded by Spark's `jsonFile` method. Other dates and other languages may also work (`*-*-pages-articles.xml.bz2`).
 
+## Setup
+
+Only **Python 3** is required. You have two options to run the scripts. The first one is the easiest, but you have to run the scripts from this repository's root folder only. With the second option, you are free to run them in any folder you want. The examples in the next sections are based in the second option.
+
+### Running from repo's root
+No extra configuration is needed in order to run the scripts as long as you are in the repository root.
+In the examples below, you will have to prefix the scripts with `scripts/` (e.g.: change `w2j.py` to `scripts/w2j.py`).
+
+### Running from any directory
+To run the scripts from any directory, change the variables below (you may prefer adding the following commands to `~/.bashrc`, so you don't need to execute them in every shell):
+```bash
+export PYTHONPATH="$PYTHONPATH:/full/path/to/wikipedia2json"
+export PATH="$PATH:/full/path/to/wikipedia2json/scripts"
+```
+
 ## Scripts
 
 ### w2j.py
